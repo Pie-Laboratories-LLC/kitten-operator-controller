@@ -212,17 +212,6 @@ a halt. A gag feature should never be able to take down a cluster.
 
 ---
 
-## Screenshots
-
-*[Insert: stock nginx welcome page -- drab, monochromatic, hideous, exactly as
-default nginx pages have always been.]*
-
-*[Insert: same page, post-injection -- an alarmingly oversized cat photo,
-requiring you to scroll to even find the "Welcome to nginx" text underneath it.
-This is, if anything, an improvement.]*
-
----
-
 ## A mea culpa, and what I'd actually do differently
 
 This project worked. It also took a genuinely long, winding path to get there,
@@ -496,7 +485,7 @@ to be manually reapplied after a forced sync.
 This project is probably about as polished as I intend to make it.  I did this
 as a lark, and moreover as a training exercise in preparation for interviewing.
 I will happily entertain pull requests, particularly for bug fixes, should any
-arise, or for functionality I feel is in keeping with the spirit of the opertor.
+arise, or for functionality I feel is in keeping with the spirit of the operator.
 
 Although this project is just a jape, it may see life in the future as a
 training exercise for folks looking to learn helm.  I would certainly value any
