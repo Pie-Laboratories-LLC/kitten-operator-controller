@@ -1,0 +1,9 @@
+apiVersion: kitten.pielaboratories.com/v1alpha1
+kind: KittenOperator
+metadata:
+  labels:
+    app.kubernetes.io/name: kitten-operator-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: kittenoperator-sample
+spec:
+  # TODO(user): Add fields here

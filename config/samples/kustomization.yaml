@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- kitten_v1alpha1_kittenoperator.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

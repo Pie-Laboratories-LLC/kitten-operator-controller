@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  policy.yaml: |
+    mode: {{ .Values.kittenInjector.mode }}
+    optInLabel: {{ .Values.kittenInjector.optInLabel }}
+    optInValue: {{ .Values.kittenInjector.optInValue | quote }}
+    excludeNamespaces:
+      {{- range .Values.kittenInjector.excludeNamespaces }}
+      - {{ . }}
+      {{- end }}
+      - {{ .Release.Namespace }}
+    internalPort: {{ .Values.kittenInjector.internalPort }}
+    sidecarImage: {{ .Values.kittenInjector.sidecarImage.repository }}:{{ .Values.kittenInjector.sidecarImage.tag }}
+    kittenServiceURL: {{ required "kittenInjector.kittenServiceURL is not set. This must point at your kitten-operator app's Service, e.g.: http://kitten-operator-kitten-operator-chart/kittenpictures -- the exact hostname depends on how you installed that chart (Helm auto-names Services as <your-release-name>-kitten-operator-chart; run 'helm list' and 'kubectl get svc' to find yours). Set with: --set kittenInjector.kittenServiceURL=http://<your-service-name>/kittenpictures" .Values.kittenInjector.kittenServiceURL }}
+    sidecarPort: {{ .Values.kittenInjector.sidecarPort }}
+    sidecarPortName: {{ .Values.kittenInjector.sidecarPortName }}
+kind: ConfigMap
+metadata:
+  name: {{ include "kitten-operator-controller.resourceName" (dict "suffix" "kitten-injector-config" "context" $) }}
+  namespace: {{ .Release.Namespace }}

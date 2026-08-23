@@ -1,0 +1,6 @@
+{{- if and .Values.certManager.enabled (not (.Values.certManager.skipCheck | default false)) }}
+{{- $certManagerCRD := lookup "apiextensions.k8s.io/v1" "CustomResourceDefinition" "" "certificates.cert-manager.io" }}
+{{- if not $certManagerCRD }}
+{{- fail "\n\nkitten-operator-controller requires cert-manager to be installed first -- the mutating admission webhook needs it to issue and rotate its TLS certificate.\n\nInstall cert-manager, then retry:\n  kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml\n  kubectl wait --for=condition=Available deployment --all -n cert-manager --timeout=120s\n\nOr, if you are managing certificates another way, skip this check:\n  helm install ... --set certManager.skipCheck=true\n" }}
+{{- end }}
+{{- end }}

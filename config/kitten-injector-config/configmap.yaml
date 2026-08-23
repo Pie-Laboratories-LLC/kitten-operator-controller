@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kitten-injector-config
+  namespace: system
+data:
+  policy.yaml: |
+    mode: optIn
+    optInLabel: kitten.pielaboratories.com/inject
+    optInValue: "true"
+    excludeNamespaces:
+      - kube-system
+      - kube-node-lease
+      - kube-public
+      - kitten-operator-controller-system
+    internalPort: 8001
+    sidecarImage: kitten-operator-sidecar:local
+    kittenServiceURL: http://kitten-operator-kitten-operator-chart/kittenpictures
