@@ -328,7 +328,8 @@ deployed the `kitten-operator` app (Helm auto-names its Service based on your
 release name, so there's no universal correct default):
 
 ```bash
-helm install kitten-operator-controller dist/chart \
+helm install kitten-operator-controller oci://ghcr.io/pie-laboratories-llc/kitten-operator-controller \
+  --version 1.0.0 \
   -n kitten-operator-controller-system --create-namespace \
   --set kittenInjector.kittenServiceURL=http://<your-kitten-operator-release>-kitten-operator-chart/kittenpictures
 ```
