@@ -3,7 +3,9 @@ Copyright 2026.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +17,7 @@ package v1
 import (
 	"context"
 	"fmt"
+
 	"k8s.io/apimachinery/pkg/util/intstr"
 
 	corev1 "k8s.io/api/core/v1"
@@ -119,7 +122,7 @@ func (d *PodCustomDefaulter) Default(ctx context.Context, pod *corev1.Pod) error
 	if pod.Annotations == nil {
 		pod.Annotations = map[string]string{}
 	}
-	pod.Annotations["kitten.pielaboratories.com/injected"] = "true"
+	pod.Annotations["kitten.pielaboratories.com/injected"] = injectedAnnotationValue
 	pod.Annotations["kitten.pielaboratories.com/original-port-name"] = originalPortName
 
 	podlog.Info("injected kitten sidecar", "pod", pod.GetName(), "namespace", pod.Namespace)

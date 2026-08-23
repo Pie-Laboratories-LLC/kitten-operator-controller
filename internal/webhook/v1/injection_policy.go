@@ -3,7 +3,9 @@ Copyright 2026.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,11 +16,17 @@ package v1
 
 import (
 	"context"
+	"slices"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+)
+
+const (
+	defaultOptInValue       = "true"
+	injectedAnnotationValue = "true"
 )
 
 // InjectionPolicy controls whether and how the kitten sidecar gets injected.
@@ -59,7 +67,7 @@ func defaultPolicy() *InjectionPolicy {
 	return &InjectionPolicy{
 		Mode:              "optIn",
 		OptInLabel:        "kitten.pielaboratories.com/inject",
-		OptInValue:        "true",
+		OptInValue:        defaultOptInValue,
 		ExcludeNamespaces: []string{"kube-system", "kube-node-lease", "kube-public"},
 		InternalPort:      8001,
 		SidecarImage:      "kitten-operator-sidecar:local",
@@ -98,10 +106,8 @@ func loadPolicy(ctx context.Context, c client.Client, namespace, name string) *I
 }
 
 func (p *InjectionPolicy) shouldInject(pod *corev1.Pod, namespace string) bool {
-	for _, excluded := range p.ExcludeNamespaces {
-		if namespace == excluded {
-			return false
-		}
+	if slices.Contains(p.ExcludeNamespaces, namespace) {
+		return false
 	}
 
 	switch p.Mode {
@@ -118,5 +124,5 @@ func (p *InjectionPolicy) shouldInject(pod *corev1.Pod, namespace string) bool {
 // webhook fires on both create and update, and we only want to add the
 // sidecar once.
 func alreadyInjected(pod *corev1.Pod) bool {
-	return pod.Annotations["kitten.pielaboratories.com/injected"] == "true"
+	return pod.Annotations["kitten.pielaboratories.com/injected"] == injectedAnnotationValue
 }

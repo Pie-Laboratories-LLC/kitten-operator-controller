@@ -36,6 +36,8 @@ import (
 	kittenv1alpha1 "github.com/Pie-Laboratories-LLC/kitten-operator-controller/api/v1alpha1"
 )
 
+const appName = "kitten-operator"
+
 // KittenOperatorReconciler reconciles a KittenOperator object
 type KittenOperatorReconciler struct {
 	client.Client
@@ -135,7 +137,7 @@ func (r *KittenOperatorReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 // exists but might have drifted (update).
 func (r *KittenOperatorReconciler) mutateDeployment(kitten *kittenv1alpha1.KittenOperator, deploy *appsv1.Deployment) error {
 	labels := map[string]string{
-		"app.kubernetes.io/name":     "kitten-operator",
+		"app.kubernetes.io/name":     appName,
 		"app.kubernetes.io/instance": kitten.Name,
 	}
 
@@ -147,7 +149,7 @@ func (r *KittenOperatorReconciler) mutateDeployment(kitten *kittenv1alpha1.Kitte
 			Spec: corev1.PodSpec{
 				Containers: []corev1.Container{
 					{
-						Name:  "kitten-operator",
+						Name:  appName,
 						Image: kitten.Spec.Image,
 						Ports: []corev1.ContainerPort{
 							{Name: "http", ContainerPort: 8000, Protocol: corev1.ProtocolTCP},
@@ -182,7 +184,7 @@ func (r *KittenOperatorReconciler) mutateDeployment(kitten *kittenv1alpha1.Kitte
 
 func (r *KittenOperatorReconciler) mutateService(kitten *kittenv1alpha1.KittenOperator, svc *corev1.Service) error {
 	labels := map[string]string{
-		"app.kubernetes.io/name":     "kitten-operator",
+		"app.kubernetes.io/name":     appName,
 		"app.kubernetes.io/instance": kitten.Name,
 	}
 

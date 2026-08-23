@@ -29,6 +29,8 @@ import (
 	kittenv1alpha1 "github.com/Pie-Laboratories-LLC/kitten-operator-controller/api/v1alpha1"
 )
 
+const testImage = "kitten-operator:test"
+
 var _ = Describe("KittenOperator controller", func() {
 	const (
 		resourceName = "test-kitten-operator"
@@ -55,7 +57,7 @@ var _ = Describe("KittenOperator controller", func() {
 			},
 			Spec: kittenv1alpha1.KittenOperatorSpec{
 				Replicas: &replicas,
-				Image:    "kitten-operator:test",
+				Image:    testImage,
 			},
 		}
 		Expect(k8sClient.Create(ctx, kitten)).To(Succeed())
@@ -66,7 +68,7 @@ var _ = Describe("KittenOperator controller", func() {
 		}, 10*time.Second, 250*time.Millisecond).Should(Succeed())
 
 		Expect(*deploy.Spec.Replicas).To(Equal(int32(3)))
-		Expect(deploy.Spec.Template.Spec.Containers[0].Image).To(Equal("kitten-operator:test"))
+		Expect(deploy.Spec.Template.Spec.Containers[0].Image).To(Equal(testImage))
 	})
 
 	It("creates a Service exposing port 80", func() {
@@ -78,7 +80,7 @@ var _ = Describe("KittenOperator controller", func() {
 			},
 			Spec: kittenv1alpha1.KittenOperatorSpec{
 				Replicas: &replicas,
-				Image:    "kitten-operator:test",
+				Image:    testImage,
 			},
 		}
 		Expect(k8sClient.Create(ctx, kitten)).To(Succeed())
@@ -101,7 +103,7 @@ var _ = Describe("KittenOperator controller", func() {
 			},
 			Spec: kittenv1alpha1.KittenOperatorSpec{
 				Replicas: &replicas,
-				Image:    "kitten-operator:test",
+				Image:    testImage,
 			},
 		}
 		Expect(k8sClient.Create(ctx, kitten)).To(Succeed())
