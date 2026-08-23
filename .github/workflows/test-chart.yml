@@ -71,7 +71,7 @@ jobs:
 
       - name: Deploy manager via Helm
         run: |
-          make helm-deploy
+          make helm-deploy HELM_EXTRA_ARGS="--set kittenInjector.kittenServiceURL=http://ci-placeholder-not-a-real-service/kittenpictures"
 
       - name: Check Helm release status
         run: |
